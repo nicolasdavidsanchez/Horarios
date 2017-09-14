@@ -1,0 +1,96 @@
+CREATE DATABASE Horario;
+use Horario;
+
+CREATE TABLE cargo
+(
+    codigo int PRIMARY KEY auto_increment,
+    cargo varchar(50) NOT null
+);
+CREATE TABLE personas
+(
+    ID int PRIMARY KEY,
+    nombre varchar(50) NOT null,
+    apellido varchar(50) NOT null,
+    telefono int not null,
+    correo varchar(50) NOT null,
+    direccion varchar(50) NOT null,
+	contraseña varchar(50) not null
+);
+CREATE TABLE horario
+(
+  	codigo int PRIMARY KEY auto_increment,
+    horaInicio time NOT null,
+    horaFin time NOT null,
+    tipo varchar(50) not null,
+    dia date not null
+);
+
+CREATE TABLE colegio
+(
+    codigoC int PRIMARY KEY auto_increment,
+    nombre varchar(50) not null,
+    tipo varchar(50) not null,
+    concesion int not null,
+    direccion varchar(50) not null,
+    telefono int not null,
+    correo varchar(50) not null,
+    nombreRector varchar(50) not null,
+    celularRector int not null,
+    correoRector varchar(50) not null,
+    nombreCoordinador varchar(50) not null,
+    celularCoordinador int not null,
+    correoCoordinador varchar(50) not null,
+    nombreDocente varchar(50) not null,
+    celularDocente int not null,
+    correoDocente varchar(50) not null
+);
+
+CREATE TABLE fichas
+(
+    codigoF int PRIMARY key,
+    programa varchar(50) not null
+);
+CREATE TABLE cargoUsuarios
+(
+    codigoCargo int not null,
+    IDUsuariosc int not null,
+    Constraint FKCodigoC foreign key(codigoCargo) references cargo(codigo),
+    Constraint FKIDU foreign key(IDUsuariosc) references personas(ID)
+);
+CREATE TABLE usuarioHorarios
+(
+    codigoHorarios int not null,
+    IDUsuariosh int not null,
+    Constraint FKCodigoH foreign key(codigoHorarios) references horario(codigo),
+    Constraint FKIDH foreign key(IDUsuariosh) references personas(ID)
+);
+CREATE TABLE horariosColegio
+(
+    codigoColegio int not null,
+    codigoHorarios int not null,
+    Constraint FKCodigoCo foreign key(codigoColegio) references colegio(codigoC),
+    Constraint FKCodigoHora foreign key(codigoHorarios) references horario(codigo)
+);
+CREATE TABLE colegioFichas
+(
+    codigoColegio int not null,
+    CodigoFichasc int not null,
+    Constraint FKCodigocf foreign key(codigoColegio) references colegio(codigoC),
+    Constraint FKCodigoF foreign key(CodigoFichasc) references fichas(codigoF)
+);
+CREATE TABLE horarioFichas
+(
+    codigoHorario int not null,
+    codigoFichas int not null,
+    Constraint FKCodigoho foreign key(codigoHorario) references horario(codigo),
+    Constraint FKCodigoFi foreign key(codigoFichas) references fichas(codigoF)
+);
+
+insert into colegio(nombre,tipo,concesion,direccion,telefono,correo,nombreRector,celularRector,correoRector,nombreCoordinador,celularCoordinador,correoCoordinador,nombreDocente,celularDocente,correoDocente) values('co','Privado',5,'calle','lola@gmail.com',1879411,'andres',22222,'abf@Gmail.com','gabriel',222223,'abbb@Gmail.com','oscar',22224,'aaaa@Gmail.com');
+insert into personas(ID,nombre,apellido,telefono,correo,direccion,contraseña) values(1001276651,'nicko','ortiz',3224073765,'jjj@gmail.com','calle123','nicko785');
+insert into fichas(codigoF,programa)values(1356742,'ADSI');
+INSERT INTO `horario` (`codigo`, `horaInicio`, `horaFin`, `tipo`, `dia`) VALUES (NULL, '14:25:14', '14:20:15', 'Apoyo', '2017-09-21');
+INSERT INTO `horariofichas` (`codigoHorario`, `codigoFichas`) VALUES ('1', '1356742');
+INSERT INTO `horarioscolegio` (`codigoColegio`, `codigoHorarios`) VALUES ('1', '1');
+INSERT INTO `usuariohorarios` (`codigoHorarios`, `IDUsuariosh`) VALUES ('1', '1001276651');
+INSERT INTO `colegiofichas` (`codigoColegio`, `CodigoFichasc`) VALUES ('1', '1356742');
